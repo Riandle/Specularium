@@ -23,11 +23,11 @@ export const siteConfig = {
    *   5. 填进来，把 enable 改成 true。
    */
   giscus: {
-    enable: false,
+    enable: true,
     repo: 'Riandle/Specularium',
-    repoId: '',
+    repoId: 'R_kgDOV2Pdqg',
     category: 'Announcements',
-    categoryId: '',
+    categoryId: 'DIC_kwDOV2Pdqs4DLoM9',
     mapping: 'pathname',
     reactionsEnabled: '1',
     inputPosition: 'top',
