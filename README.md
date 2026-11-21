@@ -57,7 +57,8 @@ npm run preview    # 本地预览构建结果
    git push -u origin main
    ```
 
-3. 打开仓库 **Settings → Pages**，把 **Source** 选成 **GitHub Actions**（不要选 "Deploy from a branch"）。
+3. 打开仓库 **Settings → Pages**，在 **Build and deployment → Source** 里选 **GitHub Actions**
+   （不要选 "Deploy from a branch"）。**这一步不做，部署会报 `Failed to create deployment (status: 404)`。**
 4. 推送后 **Actions** 里会自动跑「部署站点」，第一次大约 1–2 分钟。
 5. 构建完成后访问 <https://riandle.github.io/Specularium/>。
 
@@ -193,6 +194,10 @@ categoryId: 'DIC_kwDOxxxxxxxx',
 3. 把 `.github/workflows/deploy.yml` 里计算 base 的分支改成固定 `BASE="/"`。
 
 ## 九、常见问题
+
+**build 成功，deploy 报 `Failed to create deployment (status: 404)`**
+Pages 还没启用。到 **Settings → Pages → Build and deployment → Source** 选 **GitHub Actions**，
+然后回到 Actions 页面点 **Re-run all jobs**。启用之前每次部署都会是这个 404。
 
 **页面能打开但样式全丢 / 图片 404**
 base 子路径不对。确认 Pages 的地址是 `https://<账号>.github.io/<仓库名>/`，
