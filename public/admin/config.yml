@@ -18,8 +18,8 @@ site_url: https://riandle.github.io/Specularium/
 display_url: https://riandle.github.io/Specularium/
 
 # 直接发布模式：保存即提交到 main，不产生 Pull Request。
-# 说明：CMS 的「发布」按钮本来就是调 GitHub API 合并 PR，CMS 本身没有审核能力，
-# 真正的拦截只能靠 GitHub 分支保护（见 README「审核的真实边界」）。
+# 说明：CMS 的「发布」按钮本来就是调 GitHub API 合并 PR，CMS 本身没有审核能力；
+# 真正的拦截只能靠 GitHub 分支保护（Settings → Branches 里给 main 加规则）。
 # 想恢复「先开 PR 再合并」的话，把下面这行取消注释即可。
 # publish_mode: editorial_workflow
 
