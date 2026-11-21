@@ -66,6 +66,14 @@ collections:
               value_type: int,
               hint: '数字越小越靠前，留空则按标题排序',
             }
+      - {
+          name: draft,
+          label: 草稿（不发布）,
+          widget: boolean,
+          default: false,
+          required: false,
+          hint: '勾选后只在后台保留：不生成页面、不进搜索、侧边栏也不显示',
+        }
       - { name: body, label: 正文, widget: markdown }
 
   - name: creators
@@ -85,6 +93,14 @@ collections:
         collapsed: true
         fields:
           - { name: order, label: 顺序, widget: number, required: false, value_type: int }
+      - {
+          name: draft,
+          label: 草稿（不发布）,
+          widget: boolean,
+          default: false,
+          required: false,
+          hint: '勾选后只在后台保留：不生成页面、不进搜索、侧边栏也不显示',
+        }
       - { name: body, label: 正文, widget: markdown }
 
   - name: projects
@@ -110,6 +126,14 @@ collections:
         collapsed: true
         fields:
           - { name: order, label: 顺序, widget: number, required: false, value_type: int }
+      - {
+          name: draft,
+          label: 草稿（不发布）,
+          widget: boolean,
+          default: false,
+          required: false,
+          hint: '勾选后只在后台保留：不生成页面、不进搜索、侧边栏也不显示',
+        }
       - { name: body, label: 正文, widget: markdown }
 
   - name: gallery
