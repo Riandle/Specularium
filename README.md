@@ -87,6 +87,24 @@ npm run preview    # 本地预览构建结果
 保存会提交到独立分支并自动开一个 Pull Request，维护者合并后才构建上线。作者在后台把状态从
 Draft 改成 In review，维护者就能在 GitHub 上审阅。
 
+### 审核的真实边界（重要）
+
+后台的「发布」按钮本质上就是替作者调用 GitHub API 合并那个 PR。**CMS 不是权限系统，只是界面**：
+任何有仓库 Write 权限的人，都可以把自己的稿子从 In review 直接点成 Ready 并发布，绕过审核。
+
+真正能拦住的是 GitHub 侧的分支保护：**Settings → Branches → Add branch protection rule**，目标 `main`：
+
+- 勾 **Require a pull request before merging**
+- 勾 **Require approvals**（1 个即可）
+- 勾 **Dismiss stale pull request approvals when new commits are pushed**
+- 勾 **Do not allow bypassing the above settings**（不勾的话管理员仍可绕过）
+
+两点注意：
+
+1. **作者不能批准自己的 PR**，所以至少要有两个有写权限的人，否则谁都无法合并、发布卡死；
+2. 加了保护后，创作者点「发布」会被 GitHub 拒绝——失败信息来自 GitHub，不是 CMS 报错，
+   需要在文档里提前告诉大家「只提交、不发布」。
+
 **关于权限与安全**
 
 - 只有拥有仓库 **Write 及以上**权限的人能登录后台。
