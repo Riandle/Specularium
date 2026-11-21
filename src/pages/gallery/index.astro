@@ -14,25 +14,30 @@ const entries = (await getCollection('gallery')).sort(
     description: '观园里展示的创作者作品。',
   }}
 >
-  <p>
-    这些作品由观园的创作者自己上传、自己写说明。点开任意一件可以看完整介绍。
-    想投稿？先读<a href={link('/creators/getting-started/')}>创作者手册</a>。
-  </p>
-
-  <div class="gallery-grid">
-    {
-      entries.map((entry) => (
-        <a class="gallery-card" href={`${link('/gallery/')}${entry.id}/`}>
-          <img src={asset(entry.data.image)} alt={entry.data.title} loading="lazy" />
-          <div class="gallery-card__body">
-            <p class="gallery-card__title">{entry.data.title}</p>
-            <p class="gallery-card__meta">
-              {entry.data.artist ? `${entry.data.artist} · ` : ''}
-              {entry.data.date ? entry.data.date.toISOString().slice(0, 10) : '未注明日期'}
-            </p>
-          </div>
-        </a>
-      ))
-    }
-  </div>
+  {
+    entries.length > 0 ? (
+      <>
+        <p>这些作品由观园的创作者自己上传、自己写说明。点开任意一件可以看完整介绍。</p>
+        <div class="gallery-grid">
+          {entries.map((entry) => (
+            <a class="gallery-card" href={`${link('/gallery/')}${entry.id}/`}>
+              <img src={asset(entry.data.image)} alt={entry.data.title} loading="lazy" />
+              <div class="gallery-card__body">
+                <p class="gallery-card__title">{entry.data.title}</p>
+                <p class="gallery-card__meta">
+                  {entry.data.artist ? `${entry.data.artist} · ` : ''}
+                  {entry.data.date ? entry.data.date.toISOString().slice(0, 10) : '未注明日期'}
+                </p>
+              </div>
+            </a>
+          ))}
+        </div>
+      </>
+    ) : (
+      <p>
+        画廊还没有作品。创作者可以在<a href={link('/admin/')}>内容后台</a>里添加：
+        新建「作品」，上传封面图，写一段说明，提交审核后就会出现在这里。
+      </p>
+    )
+  }
 </StarlightPage>

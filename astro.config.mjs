@@ -46,29 +46,30 @@ export default defineConfig({
       components: {
         MarkdownContent: './src/components/MarkdownContent.astro',
       },
-      // 侧边栏：中文标签 + 目录自动生成，新增文档只要放进对应文件夹就会出现。
+      // 侧边栏：中文标签 + 目录自动生成。
+      // 目录里还没有文档时，自动生成的分组会显示成空标题，所以先注释掉；
+      // 往对应文件夹里放入文档后，把这些注释放开即可（不需要逐个列文件名）。
       sidebar: [
         {
           label: '开始',
           items: [{ label: '观园简介', slug: 'intro' }],
         },
-        {
-          label: '文档',
-          items: [{ autogenerate: { directory: 'documents' } }],
-        },
-        {
-          label: '项目文档集',
-          // 一个项目 = 一个文件夹，文件夹名就是侧边栏里的分组名。
-          // 用中文命名文件夹，就能得到中文标题且新增项目时无需改配置。
-          // 如果某个项目想要和文件夹名不同的标题，或者要固定顺序，
-          // 把它改成显式分组即可，例如：
-          //   { label: '示例项目 Alpha', items: [{ autogenerate: { directory: 'projects/示例项目Alpha' } }] }
-          items: [{ autogenerate: { directory: 'projects', collapsed: true } }],
-        },
-        {
-          label: '创作者手册',
-          items: [{ autogenerate: { directory: 'creators' } }],
-        },
+        // {
+        //   label: '文档',
+        //   items: [{ autogenerate: { directory: 'documents' } }],
+        // },
+        // 一个项目 = 一个文件夹，文件夹名就是侧边栏里的分组名。
+        // 用中文命名文件夹，就能得到中文标题且新增项目时无需改配置。
+        // 想给某个项目换标题或固定顺序，改成显式分组：
+        //   { label: '示例项目', items: [{ autogenerate: { directory: 'projects/示例项目' } }] }
+        // {
+        //   label: '项目文档集',
+        //   items: [{ autogenerate: { directory: 'projects', collapsed: true } }],
+        // },
+        // {
+        //   label: '创作者手册',
+        //   items: [{ autogenerate: { directory: 'creators' } }],
+        // },
         {
           label: '作品画廊',
           link: '/gallery/',

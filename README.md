@@ -12,13 +12,16 @@
 
 ## 一、当前配置
 
-仓库地址已填入 `Riandle/Specularium`，站点预计部署在 <https://riandle.github.io/Specularium/>：
+仓库地址已填入 `Riandle/Specularium`，站点部署在 <https://riandle.github.io/Specularium/>：
 
 | 文件 | 已填内容 |
 | --- | --- |
 | `astro.config.mjs` | `REPO_URL = https://github.com/Riandle/Specularium` |
-| `public/admin/config.yml` | `backend.repo`、`site_url`、`display_url` |
-| `src/data/site.ts` | 评论仓库 `Riandle/Specularium`（两个 ID 待填，见第七节） |
+| `public/admin/config.yml` | `backend.repo`、`site_url`、`display_url`、审核流程、草稿等字段 |
+| `src/data/site.ts` | 评论仓库 `Riandle/Specularium` 与 giscus 两个 ID |
+
+**本地私有资料**：`_local/` 目录已被 `.gitignore` 排除，既不会提交也不会发布，
+目前放着《开始写作》和《Markdown 语法速查》两份内部文档。
 
 **还需要你处理的两件事**
 
