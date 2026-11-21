@@ -1,0 +1,8 @@
+---
+// 覆盖 Starlight 的 MarkdownContent：正文之后追加评论区。
+import Default from '@astrojs/starlight/components/MarkdownContent.astro';
+import Comments from './Comments.astro';
+---
+
+<Default><slot /></Default>
+<Comments />

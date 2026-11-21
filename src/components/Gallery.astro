@@ -1,0 +1,34 @@
+---
+import { getCollection } from 'astro:content';
+import { asset, link } from '../lib/url';
+
+type Props = { limit?: number };
+
+const { limit = 6 } = Astro.props;
+
+const byDateDesc = (a: { data: { date?: Date } }, b: { data: { date?: Date } }) =>
+  (b.data.date?.getTime() ?? 0) - (a.data.date?.getTime() ?? 0);
+
+const all = (await getCollection('gallery')).sort(byDateDesc);
+const featured = all.filter((entry) => entry.data.featured);
+const entries = (featured.length > 0 ? featured : all).slice(0, limit);
+---
+
+{
+  entries.length > 0 && (
+    <div class="gallery-grid">
+      {entries.map((entry) => (
+        <a class="gallery-card" href={`${link('/gallery/')}${entry.id}/`}>
+          <img src={asset(entry.data.image)} alt={entry.data.title} loading="lazy" />
+          <div class="gallery-card__body">
+            <p class="gallery-card__title">{entry.data.title}</p>
+            <p class="gallery-card__meta">
+              {entry.data.artist ? `${entry.data.artist} · ` : ''}
+              {entry.data.date ? entry.data.date.toISOString().slice(0, 10) : '未注明日期'}
+            </p>
+          </div>
+        </a>
+      ))}
+    </div>
+  )
+}

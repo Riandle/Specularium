@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900" role="img" aria-label="示例作品二：绿色渐变与叶片">
+  <defs>
+    <linearGradient id="leafg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0e2f28"/>
+      <stop offset="100%" stop-color="#2f6b58"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="900" fill="url(#leafg)"/>
+  <g fill="none" stroke="#a9d4c0" stroke-width="4" opacity="0.75">
+    <path d="M240 760C240 520 420 360 640 300c-20 230-180 400-400 460Z"/>
+    <path d="M640 300c210 60 340 230 360 460-220-30-390-200-450-420"/>
+    <path d="M620 320v420"/>
+  </g>
+  <circle cx="980" cy="180" r="60" fill="#cfe9dc" opacity="0.5"/>
+  <text x="70" y="120" font-family="Georgia, 'Songti SC', serif" font-size="46" fill="#d9efe4" opacity="0.8">示例作品 · 二</text>
+</svg>

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900" role="img" aria-label="示例作品三：蓝色渐变与波纹">
+  <defs>
+    <linearGradient id="seag" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#dfeaf2"/>
+      <stop offset="100%" stop-color="#3d6e8c"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="900" fill="url(#seag)"/>
+  <g fill="none" stroke="#1f4b63" stroke-width="3" opacity="0.5">
+    <path d="M0 560c150-60 300-60 450 0s300 60 450 0 250-40 300-20"/>
+    <path d="M0 640c150-60 300-60 450 0s300 60 450 0 250-40 300-20"/>
+    <path d="M0 720c150-60 300-60 450 0s300 60 450 0 250-40 300-20"/>
+    <path d="M0 800c150-60 300-60 450 0s300 60 450 0 250-40 300-20"/>
+  </g>
+  <text x="70" y="120" font-family="Georgia, 'Songti SC', serif" font-size="46" fill="#1f4b63" opacity="0.8">示例作品 · 三</text>
+</svg>

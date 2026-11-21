@@ -1,0 +1,114 @@
+# 观园内容后台（Sveltia CMS）配置
+#
+# 部署前必改：
+#   1. backend.repo 改成你的 owner/repo
+#   2. site_url / display_url 改成你的站点地址
+# 说明见仓库根目录 README.md 的「后台登录」一节。
+
+backend:
+  name: github
+  repo: YOUR_OWNER/YOUR_REPO
+  branch: main
+
+site_url: https://YOUR_OWNER.github.io/YOUR_REPO/
+display_url: https://YOUR_OWNER.github.io/YOUR_REPO/
+
+# 默认「保存即发布」。想要「先开 PR、有人合并后才发布」，
+# 解开下面这行，并给创作者的令牌加上 Pull requests 读写权限。
+# publish_mode: editorial_workflow
+
+# 后台界面语言（内置 zh-CN 语言包）
+locale: zh-CN
+
+# 图片上传到哪里：进入仓库 public/images/，页面上以 /images/ 开头引用
+media_folder: public/images
+public_folder: /images
+
+collections:
+  - name: documents
+    label: 文档
+    label_singular: 文档
+    description: 长期资料、公约、项目说明等
+    folder: src/content/docs/documents
+    create: true
+    slug: '{{slug}}'
+    preview_path: documents/{{slug}}/
+    fields:
+      - { name: title, label: 标题, widget: string }
+      - {
+          name: description,
+          label: 摘要,
+          widget: text,
+          required: false,
+          hint: '一句话说明这篇文档讲什么，会出现在搜索结果里',
+        }
+      - name: sidebar
+        label: 侧边栏排序
+        widget: object
+        required: false
+        collapsed: true
+        fields:
+          - {
+              name: order,
+              label: 顺序,
+              widget: number,
+              required: false,
+              value_type: int,
+              hint: '数字越小越靠前，留空则按标题排序',
+            }
+      - { name: body, label: 正文, widget: markdown }
+
+  - name: creators
+    label: 创作者手册
+    label_singular: 手册页面
+    folder: src/content/docs/creators
+    create: true
+    slug: '{{slug}}'
+    preview_path: creators/{{slug}}/
+    fields:
+      - { name: title, label: 标题, widget: string }
+      - { name: description, label: 摘要, widget: text, required: false }
+      - name: sidebar
+        label: 侧边栏排序
+        widget: object
+        required: false
+        collapsed: true
+        fields:
+          - { name: order, label: 顺序, widget: number, required: false, value_type: int }
+      - { name: body, label: 正文, widget: markdown }
+
+  - name: gallery
+    label: 作品画廊
+    label_singular: 作品
+    description: 每个条目是一件作品，图片放在 public/images/gallery/
+    folder: src/content/gallery
+    create: true
+    slug: '{{slug}}'
+    preview_path: gallery/{{slug}}/
+    fields:
+      - { name: title, label: 作品名, widget: string }
+      - { name: description, label: 一句话介绍, widget: text, required: false }
+      - { name: artist, label: 作者, widget: string, required: false }
+      - { name: date, label: 日期, widget: datetime, date_format: 'YYYY-MM-DD', time_format: false, required: false }
+      - { name: image, label: 封面图, widget: image }
+      - name: gallery
+        label: 附图
+        widget: list
+        required: false
+        default: []
+        field: { name: image, label: 图片, widget: image }
+      - name: tags
+        label: 标签
+        widget: list
+        required: false
+        default: []
+        field: { name: tag, label: 标签, widget: string }
+      - {
+          name: featured,
+          label: 首页推荐,
+          widget: boolean,
+          default: false,
+          required: false,
+          hint: '勾选后会出现在首页「最新作品」里',
+        }
+      - { name: body, label: 作品说明, widget: markdown, required: false, default: '' }

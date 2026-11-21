@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>观园 · 内容后台</title>
+    <link rel="icon" href="../favicon.svg" />
+    <style>
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, 'Segoe UI', 'Noto Sans SC', sans-serif;
+      }
+      .boot {
+        display: grid;
+        place-items: center;
+        min-height: 100vh;
+        color: #4a4a4a;
+        font-size: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="boot">正在加载编辑器…</div>
+
+    <!--
+      Sveltia CMS 单文件脚本，由 `npm run build` 之前的 scripts/copy-cms.mjs
+      从 node_modules 复制到同目录。直接打开本文件（file://）不会工作，
+      需要通过站点地址访问，例如 https://<你的域名>/admin/。
+    -->
+    <script src="./sveltia-cms.js"></script>
+  </body>
+</html>

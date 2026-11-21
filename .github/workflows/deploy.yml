@@ -1,0 +1,72 @@
+name: 部署站点
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# GitHub Pages 所需的权限
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 同一个时间只跑一个部署，新的推送排队而不是打断正在进行的构建
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 安装 Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      # 仓库名不是 <用户>.github.io 时，站点在 /<仓库名>/ 子路径下，
+      # 必须把 base 传给构建，否则 CSS、图片和链接会 404。
+      # 如果以后绑定了自定义域名，把 base 改成 "/"。
+      - name: 计算站点地址
+        id: site
+        run: |
+          OWNER="${GITHUB_REPOSITORY_OWNER}"
+          NAME="${GITHUB_REPOSITORY#*/}"
+          if [ "$NAME" = "${OWNER}.github.io" ]; then
+            BASE="/"
+          else
+            BASE="/${NAME}/"
+          fi
+          echo "base=${BASE}" >> "$GITHUB_OUTPUT"
+          echo "site=https://${OWNER}.github.io" >> "$GITHUB_OUTPUT"
+          echo "站点将部署到 https://${OWNER}.github.io${BASE}"
+
+      - name: 安装依赖
+        run: npm ci
+
+      - name: 构建
+        run: npm run build
+        env:
+          SITE_URL: ${{ steps.site.outputs.site }}
+          BASE_PATH: ${{ steps.site.outputs.base }}
+
+      - name: 上传构建产物
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: 发布到 GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,91 @@
+/* 观园主题色：墨绿 + 米白，暗色模式用更亮的青绿。 */
+:root {
+  --sl-color-accent-low: #dcebe5;
+  --sl-color-accent: #2f6b58;
+  --sl-color-accent-high: #16382e;
+  --sl-color-bg: #fbfaf7;
+  --sl-color-bg-nav: #f4f1ea;
+  --sl-color-hairline-shade: #e3ded2;
+}
+
+:root[data-theme='dark'] {
+  --sl-color-accent-low: #0f2a24;
+  --sl-color-accent: #63a891;
+  --sl-color-accent-high: #c8e6da;
+  --sl-color-bg: #101614;
+  --sl-color-bg-nav: #16201d;
+}
+
+/* 正文行距与中文排版 */
+.sl-markdown-content {
+  line-height: 1.85;
+}
+
+.sl-markdown-content :where(p, li) {
+  letter-spacing: 0.01em;
+}
+
+/* 首页 hero 稍微收紧一点 */
+.hero {
+  padding-block: 1rem 2rem;
+}
+
+/* 画廊网格 */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.25rem;
+  margin-block: 1.5rem;
+}
+
+.gallery-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--sl-color-hairline-shade);
+  border-radius: 0.75rem;
+  overflow: hidden;
+  background: var(--sl-color-bg-nav);
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.gallery-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 12%);
+}
+
+.gallery-card img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  display: block;
+  background: var(--sl-color-accent-low);
+}
+
+.gallery-card__body {
+  padding: 0.75rem 0.9rem 0.9rem;
+}
+
+.gallery-card__title {
+  font-weight: 600;
+  margin: 0 0 0.25rem;
+}
+
+.gallery-card__meta {
+  font-size: var(--sl-text-sm);
+  color: var(--sl-color-gray-3);
+  margin: 0;
+}
+
+/* 评论区 */
+.comments {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--sl-color-hairline-shade);
+}
+
+.comments h2 {
+  font-size: var(--sl-text-h3);
+  margin-bottom: 1rem;
+}

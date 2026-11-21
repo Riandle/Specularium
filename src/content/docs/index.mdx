@@ -1,0 +1,43 @@
+---
+title: 观园
+description: 观园文档库：文档公开可读，创作者在网页上直接编辑，改动自动提交到 GitHub。
+template: splash
+hero:
+  title: 观园
+  tagline: 一处安静存放文字与作品的地方。文档公开可读；创作者在网页上直接编辑，保存即提交到 GitHub，几分钟后自动上线。
+  actions:
+    - text: 开始阅读
+      link: ./intro/
+      icon: right-arrow
+      variant: primary
+    - text: 创作者登录
+      link: ./admin/
+      icon: pencil
+      variant: secondary
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+import Gallery from '../../components/Gallery.astro';
+
+## 观园里有什么
+
+<CardGrid>
+  <Card title="公开可读" icon="open-book">
+    不需要注册，任何拿到链接的人都能读完全部文档。页面支持全文搜索、目录跳转和深色模式。
+  </Card>
+  <Card title="创作者在线编辑" icon="pencil">
+    创作者打开 `/admin/`，用 GitHub 账号登录后直接在网页里写，保存后自动生成一次提交，不需要本地环境。
+  </Card>
+  <Card title="版本可追溯" icon="code-branch">
+    所有文字都存在 GitHub 仓库里。谁在什么时候改了什么，随时能查、能对比、能回退。
+  </Card>
+  <Card title="讨论与反馈" icon="comment">
+    每篇文档底部都有评论区，读者可以直接提问，创作者收到通知后回复。
+  </Card>
+</CardGrid>
+
+## 最新作品
+
+<Gallery limit={3} />
+
+<p><a href="./gallery/">浏览全部作品 →</a></p>

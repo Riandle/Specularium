@@ -1,0 +1,25 @@
+# 构建产物
+dist/
+.astro/
+
+# 依赖
+node_modules/
+.pnpm-store/
+
+# 本地缓存（沙箱环境下把包管理器缓存放在仓库内）
+.npm-cache/
+.pnpm-cache/
+.scaffold-tmp/
+
+# CMS 运行时文件（由 scripts/copy-cms.mjs 从 node_modules 复制）
+public/admin/sveltia-cms.js
+
+# 系统与编辑器
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# 日志与临时文件
+*.log
+.dsh-*

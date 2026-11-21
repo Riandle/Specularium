@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900" role="img" aria-label="示例作品一：暖色渐变与圆">
+  <defs>
+    <linearGradient id="sky1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f7d9b0"/>
+      <stop offset="55%" stop-color="#e9a978"/>
+      <stop offset="100%" stop-color="#b4664a"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="900" fill="url(#sky1)"/>
+  <circle cx="820" cy="330" r="150" fill="#fdf3e0" opacity="0.85"/>
+  <g stroke="#7c4433" stroke-width="3" opacity="0.45">
+    <line x1="0" y1="640" x2="1200" y2="600"/>
+    <line x1="0" y1="700" x2="1200" y2="660"/>
+    <line x1="0" y1="760" x2="1200" y2="720"/>
+    <line x1="0" y1="820" x2="1200" y2="780"/>
+  </g>
+  <text x="70" y="120" font-family="Georgia, 'Songti SC', serif" font-size="46" fill="#5c3327" opacity="0.8">示例作品 · 一</text>
+</svg>

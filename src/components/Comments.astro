@@ -1,0 +1,65 @@
+---
+import { siteConfig } from '../data/site';
+
+const g = siteConfig.giscus;
+const enabled = Boolean(g.enable && g.repoId && g.categoryId);
+---
+
+{
+  enabled && (
+    <section class="comments" id="comments">
+      <h2>讨论</h2>
+      <div
+        class="giscus-host"
+        data-repo={g.repo}
+        data-repo-id={g.repoId}
+        data-category={g.category}
+        data-category-id={g.categoryId}
+        data-mapping={g.mapping}
+        data-reactions-enabled={g.reactionsEnabled}
+        data-input-position={g.inputPosition}
+        data-lang={g.lang}
+      />
+    </section>
+  )
+}
+
+<script>
+  function currentTheme() {
+    return document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
+  }
+
+  function mountGiscus() {
+    document.querySelectorAll<HTMLElement>('.giscus-host').forEach((host) => {
+      if (host.dataset.mounted === 'true') return;
+      host.dataset.mounted = 'true';
+
+      const script = document.createElement('script');
+      script.src = 'https://giscus.app/client.js';
+      script.async = true;
+      script.crossOrigin = 'anonymous';
+
+      const attrs: Record<string, string> = {
+        'data-repo': host.dataset.repo ?? '',
+        'data-repo-id': host.dataset.repoId ?? '',
+        'data-category': host.dataset.category ?? '',
+        'data-category-id': host.dataset.categoryId ?? '',
+        'data-mapping': host.dataset.mapping ?? 'pathname',
+        'data-strict': '0',
+        'data-reactions-enabled': host.dataset.reactionsEnabled ?? '1',
+        'data-emit-metadata': '0',
+        'data-input-position': host.dataset.inputPosition ?? 'top',
+        'data-theme': currentTheme(),
+        'data-lang': host.dataset.lang ?? 'zh-CN',
+        'data-loading': 'lazy',
+      };
+      for (const [key, value] of Object.entries(attrs)) script.setAttribute(key, value);
+
+      host.appendChild(script);
+    });
+  }
+
+  mountGiscus();
+  // Starlight 使用客户端路由，换页后需要重新挂载。
+  document.addEventListener('astro:page-load', mountGiscus);
+</script>
