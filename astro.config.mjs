@@ -57,6 +57,15 @@ export default defineConfig({
           items: [{ autogenerate: { directory: 'documents' } }],
         },
         {
+          label: '项目文档集',
+          // 一个项目 = 一个文件夹，文件夹名就是侧边栏里的分组名。
+          // 用中文命名文件夹，就能得到中文标题且新增项目时无需改配置。
+          // 如果某个项目想要和文件夹名不同的标题，或者要固定顺序，
+          // 把它改成显式分组即可，例如：
+          //   { label: '示例项目 Alpha', items: [{ autogenerate: { directory: 'projects/示例项目Alpha' } }] }
+          items: [{ autogenerate: { directory: 'projects', collapsed: true } }],
+        },
+        {
           label: '创作者手册',
           items: [{ autogenerate: { directory: 'creators' } }],
         },

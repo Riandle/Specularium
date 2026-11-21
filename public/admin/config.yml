@@ -34,6 +34,11 @@ collections:
     create: true
     slug: '{{slug}}'
     preview_path: documents/{{slug}}/
+    # 允许在「文档」里建子文件夹（文档集）。新建时在「路径」字段里写 folder/名称 即可。
+    # subfolders: false 是给 Astro/Starlight 这类「一个文件一页」的框架用的。
+    nested:
+      depth: 4
+      subfolders: false
     fields:
       - { name: title, label: 标题, widget: string }
       - {
@@ -66,6 +71,29 @@ collections:
     create: true
     slug: '{{slug}}'
     preview_path: creators/{{slug}}/
+    fields:
+      - { name: title, label: 标题, widget: string }
+      - { name: description, label: 摘要, widget: text, required: false }
+      - name: sidebar
+        label: 侧边栏排序
+        widget: object
+        required: false
+        collapsed: true
+        fields:
+          - { name: order, label: 顺序, widget: number, required: false, value_type: int }
+      - { name: body, label: 正文, widget: markdown }
+
+  - name: projects
+    label: 项目文档集
+    label_singular: 项目文档
+    description: 一个文件夹 = 一个项目，文件夹名就是侧边栏分组名；项目里可以再建子文件夹
+    folder: src/content/docs/projects
+    create: true
+    slug: '{{slug}}'
+    preview_path: projects/{{slug}}/
+    nested:
+      depth: 5
+      subfolders: false
     fields:
       - { name: title, label: 标题, widget: string }
       - { name: description, label: 摘要, widget: text, required: false }
