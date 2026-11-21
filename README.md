@@ -78,55 +78,44 @@ npm run preview    # 本地预览构建结果
 访问 `https://riandle.github.io/Specularium/admin/`，用 **GitHub 个人访问令牌**登录，不需要装任何软件：
 
 1. 点「Sign in with Token」，按提示到 GitHub 生成 **Fine-grained token**。
-2. 仓库选 `Specularium`，权限勾 **两项**：
-   - **Contents: Read and write**
-   - **Pull requests: Read and write**（审核流程需要，缺了会报 `Resource not accessible by personal access token`）
+2. 仓库选 `Specularium`，权限只需要 **Contents: Read and write**（读写文档和图片）。
 3. 粘贴令牌登录，之后就能编辑文档、上传图片、保存。
 
-**审核流程是默认开启的**（`public/admin/config.yml` 里的 `publish_mode: editorial_workflow`）：
-保存会提交到独立分支并自动开一个 Pull Request，维护者合并后才构建上线。作者在后台把状态从
-Draft 改成 In review，维护者就能在 GitHub 上审阅。
+**当前是「保存即发布」**：`config.yml` 里的 `publish_mode` 已注释掉，保存直接提交到 `main`，
+Actions 自动构建上线，不再产生 Pull Request。
 
 ### 审核的真实边界（重要）
 
-后台的「发布」按钮本质上就是替作者调用 GitHub API 合并那个 PR。**CMS 不是权限系统，只是界面**：
-任何有仓库 Write 权限的人，都可以把自己的稿子从 In review 直接点成 Ready 并发布，绕过审核。
+后台的「发布」按钮本质上就是替作者调用 GitHub API 合并 PR。**CMS 不是权限系统，只是界面**：
+任何有仓库 Write 权限的人都能发布任何内容——CMS 里的「编辑流程」拦不住任何人，所以这里关掉了它。
 
-真正能拦住的是 GitHub 侧的分支保护：**Settings → Branches → Add branch protection rule**，目标 `main`：
+真要审核，只能靠 GitHub 侧的分支保护：**Settings → Branches → Add branch protection rule**，目标 `main`：
 
 - 勾 **Require a pull request before merging**
 - 勾 **Require approvals**（1 个即可）
 - 勾 **Dismiss stale pull request approvals when new commits are pushed**
 - 勾 **Do not allow bypassing the above settings**（不勾的话管理员仍可绕过）
 
-两点注意：
+代价与前提：
 
-1. **作者不能批准自己的 PR**，所以至少要有两个有写权限的人，否则谁都无法合并、发布卡死；
-2. 加了保护后，创作者点「发布」会被 GitHub 拒绝——失败信息来自 GitHub，不是 CMS 报错，
-   需要在文档里提前告诉大家「只提交、不发布」。
+1. **作者不能批准自己的 PR**，所以至少要有两个有写权限的人，否则谁都发不出去；
+2. 必须重新打开 `config.yml` 里的 `publish_mode: editorial_workflow`，让改动先变成 PR；
+3. 创作者点「发布」会被 GitHub 拒绝，报错来自 GitHub 而非 CMS，要提前说明「只提交、不发布」。
 
 **关于权限与安全**
 
 - 只有拥有仓库 **Write 及以上**权限的人能登录后台。
 - 令牌保存在**创作者自己的浏览器**里，不经过任何第三方服务器。
 - 收回权限：把对方从仓库 Collaborators 里移除，或让他吊销令牌。
-- 如果希望「作者自己不能合并自己的改动」，给 `main` 加分支保护，要求 PR 审阅通过才能合并。
 
-**批量合并待审改动**
+**多次保存只会部署一次**
 
-审核流程下**一条内容一个 PR**（同一篇反复编辑只会更新同一个 PR，不会越攒越多）。
-攒了几条之后不用逐个点合并：
+创作者一口气写五篇，会各自产生一次提交（CMS 一次保存 = 一个 commit，没有「攒一批再一次提交」的功能），
+但部署工作流开了「新构建取消旧构建」（`concurrency.cancel-in-progress: true`），
+所以线上只会部署最后那次内容，不会连跑五次构建。
 
-1. 打开仓库 **Actions → 合并待审改动 → Run workflow**；
-2. 先勾 `dry_run` 跑一次，看清单对不对；
-3. 再跑一次（不勾 dry_run），会把所有 `cms/` 开头的 PR 依次 squash 合并、删掉分支，
-   并在最后触发**一次**部署——比逐条合并少跑好几次构建。
-
-工作流文件：[.github/workflows/merge-pending.yml](.github/workflows/merge-pending.yml)。
-合并失败的 PR（冲突、已关闭）会被跳过，不影响其他条目。
-
-如果你本来就不需要审核，也可以把 `config.yml` 里的 `publish_mode` 那行注释掉，
-保存会直接提交到 `main`，不再产生 PR。
+如果想要更彻底的「攒批发布」，可以把部署改成定时触发（例如每 30 分钟一次），
+代价是内容最长要等半小时才上线——需要的话说一声。
 
 **可选：换成一键登录**
 

@@ -17,10 +17,11 @@ backend:
 site_url: https://riandle.github.io/Specularium/
 display_url: https://riandle.github.io/Specularium/
 
-# 审核流程：保存时先在仓库开一个 Pull Request，审阅者合并后才发布上线。
-# 注意：创作者的令牌必须额外勾选 **Pull requests: Read and write**，
-# 否则保存会在「开 PR」那一步报 Resource not accessible by personal access token。
-publish_mode: editorial_workflow
+# 直接发布模式：保存即提交到 main，不产生 Pull Request。
+# 说明：CMS 的「发布」按钮本来就是调 GitHub API 合并 PR，CMS 本身没有审核能力，
+# 真正的拦截只能靠 GitHub 分支保护（见 README「审核的真实边界」）。
+# 想恢复「先开 PR 再合并」的话，把下面这行取消注释即可。
+# publish_mode: editorial_workflow
 
 # 后台界面语言（内置 zh-CN 语言包）
 locale: zh-CN

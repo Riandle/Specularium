@@ -11,10 +11,12 @@ permissions:
   pages: write
   id-token: write
 
-# 同一个时间只跑一个部署，新的推送排队而不是打断正在进行的构建
+# 同一个时间只跑一个部署。创作者连续保存多篇时，新的构建会取消还没跑完的旧构建，
+# 最终只部署最后一次内容——相当于把多次保存「攒成一次发布」。
+# 代价：构建进行到一半被取消时，线上仍是上一个版本（不会出现半成品）。
 concurrency:
   group: pages
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   build:
