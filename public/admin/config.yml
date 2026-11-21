@@ -53,7 +53,7 @@ collections:
           hint: '一句话说明这篇文档讲什么，会出现在搜索结果里',
         }
       - name: sidebar
-        label: 侧边栏排序
+        label: 侧边栏
         widget: object
         required: false
         collapsed: true
@@ -66,6 +66,9 @@ collections:
               value_type: int,
               hint: '数字越小越靠前，留空则按标题排序',
             }
+          - { name: label, label: 侧边栏标题, widget: string, required: false, hint: '留空就用文章标题；只想在侧边栏换个名字时填' }
+          - { name: hidden, label: 不在侧边栏显示, widget: boolean, default: false, required: false, hint: '文章照常上线、网址可访问，只是不出现在侧边栏' }
+          - { name: badge, label: 徽章文字, widget: string, required: false, hint: '标题旁的小标签，例如「新」「连载中」' }
       - {
           name: draft,
           label: 草稿（不发布）,
@@ -74,6 +77,15 @@ collections:
           required: false,
           hint: '勾选后只在后台保留：不生成页面、不进搜索、侧边栏也不显示',
         }
+      - name: tableOfContents
+        label: 右侧目录
+        widget: object
+        required: false
+        collapsed: true
+        fields:
+          - { name: minHeadingLevel, label: 起始级别, widget: number, required: false, value_type: int, hint: '2 = 从二级标题开始收录，默认 2' }
+          - { name: maxHeadingLevel, label: 最深级别, widget: number, required: false, value_type: int, hint: '默认 3，只收 ## 和 ###' }
+      - { name: pagefind, label: 站内搜索收录, widget: boolean, default: true, required: false, hint: '取消勾选后这篇不会出现在搜索结果里，但页面照常可访问' }
       - { name: body, label: 正文, widget: markdown }
 
   - name: creators
@@ -87,12 +99,15 @@ collections:
       - { name: title, label: 标题, widget: string }
       - { name: description, label: 摘要, widget: text, required: false }
       - name: sidebar
-        label: 侧边栏排序
+        label: 侧边栏
         widget: object
         required: false
         collapsed: true
         fields:
           - { name: order, label: 顺序, widget: number, required: false, value_type: int }
+          - { name: label, label: 侧边栏标题, widget: string, required: false, hint: '留空就用文章标题；只想在侧边栏换个名字时填' }
+          - { name: hidden, label: 不在侧边栏显示, widget: boolean, default: false, required: false, hint: '文章照常上线、网址可访问，只是不出现在侧边栏' }
+          - { name: badge, label: 徽章文字, widget: string, required: false, hint: '标题旁的小标签，例如「新」「连载中」' }
       - {
           name: draft,
           label: 草稿（不发布）,
@@ -101,6 +116,15 @@ collections:
           required: false,
           hint: '勾选后只在后台保留：不生成页面、不进搜索、侧边栏也不显示',
         }
+      - name: tableOfContents
+        label: 右侧目录
+        widget: object
+        required: false
+        collapsed: true
+        fields:
+          - { name: minHeadingLevel, label: 起始级别, widget: number, required: false, value_type: int, hint: '2 = 从二级标题开始收录，默认 2' }
+          - { name: maxHeadingLevel, label: 最深级别, widget: number, required: false, value_type: int, hint: '默认 3，只收 ## 和 ###' }
+      - { name: pagefind, label: 站内搜索收录, widget: boolean, default: true, required: false, hint: '取消勾选后这篇不会出现在搜索结果里，但页面照常可访问' }
       - { name: body, label: 正文, widget: markdown }
 
   - name: projects
@@ -120,12 +144,15 @@ collections:
       - { name: title, label: 标题, widget: string }
       - { name: description, label: 摘要, widget: text, required: false }
       - name: sidebar
-        label: 侧边栏排序
+        label: 侧边栏
         widget: object
         required: false
         collapsed: true
         fields:
           - { name: order, label: 顺序, widget: number, required: false, value_type: int }
+          - { name: label, label: 侧边栏标题, widget: string, required: false, hint: '留空就用文章标题；只想在侧边栏换个名字时填' }
+          - { name: hidden, label: 不在侧边栏显示, widget: boolean, default: false, required: false, hint: '文章照常上线、网址可访问，只是不出现在侧边栏' }
+          - { name: badge, label: 徽章文字, widget: string, required: false, hint: '标题旁的小标签，例如「新」「连载中」' }
       - {
           name: draft,
           label: 草稿（不发布）,
@@ -134,6 +161,15 @@ collections:
           required: false,
           hint: '勾选后只在后台保留：不生成页面、不进搜索、侧边栏也不显示',
         }
+      - name: tableOfContents
+        label: 右侧目录
+        widget: object
+        required: false
+        collapsed: true
+        fields:
+          - { name: minHeadingLevel, label: 起始级别, widget: number, required: false, value_type: int, hint: '2 = 从二级标题开始收录，默认 2' }
+          - { name: maxHeadingLevel, label: 最深级别, widget: number, required: false, value_type: int, hint: '默认 3，只收 ## 和 ###' }
+      - { name: pagefind, label: 站内搜索收录, widget: boolean, default: true, required: false, hint: '取消勾选后这篇不会出现在搜索结果里，但页面照常可访问' }
       - { name: body, label: 正文, widget: markdown }
 
   - name: gallery
