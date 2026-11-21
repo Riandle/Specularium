@@ -1,13 +1,10 @@
 ---
 title: 设定
-description: 观园的世界观、人物、地点与术语设定。
-sidebar:
-  order: 0
+description: 那些规束了世界存在的唯一方式的事物，观园的设定
+sidebar: null
+draft: false
+tableOfContents: null
+pagefind: false
 ---
 
-这里存放设定：世界观、人物、地点、术语。
-
-想分类管理，就在新建时把「路径」字段填成类别名（例如 `人物` 或 `地点`），
-侧边栏会自动多出一层分组。规则和故事集一样。
-
-目前还没有内容——在后台「设定」里新建第一条即可。
+总是如此

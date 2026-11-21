@@ -1,13 +1,10 @@
 ---
 title: 故事集
-description: 观园收录的故事。
-sidebar:
-  order: 0
+description: 在观园里发生过的那些故事与事故
+sidebar: null
+draft: false
+tableOfContents: null
+pagefind: false
 ---
 
-这里存放故事。每篇文档就是一个故事，左侧按标题排列。
-
-想按系列组织，就在新建时把「路径」字段填成系列名（例如 `长夜`），
-侧边栏会自动多出一层分组，那一层里放这个系列的各篇。
-
-目前还没有内容——在后台「故事集」里新建第一篇即可。
+因而存在于此
