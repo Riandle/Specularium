@@ -94,6 +94,22 @@ Draft 改成 In review，维护者就能在 GitHub 上审阅。
 - 收回权限：把对方从仓库 Collaborators 里移除，或让他吊销令牌。
 - 如果希望「作者自己不能合并自己的改动」，给 `main` 加分支保护，要求 PR 审阅通过才能合并。
 
+**批量合并待审改动**
+
+审核流程下**一条内容一个 PR**（同一篇反复编辑只会更新同一个 PR，不会越攒越多）。
+攒了几条之后不用逐个点合并：
+
+1. 打开仓库 **Actions → 合并待审改动 → Run workflow**；
+2. 先勾 `dry_run` 跑一次，看清单对不对；
+3. 再跑一次（不勾 dry_run），会把所有 `cms/` 开头的 PR 依次 squash 合并、删掉分支，
+   并在最后触发**一次**部署——比逐条合并少跑好几次构建。
+
+工作流文件：[.github/workflows/merge-pending.yml](.github/workflows/merge-pending.yml)。
+合并失败的 PR（冲突、已关闭）会被跳过，不影响其他条目。
+
+如果你本来就不需要审核，也可以把 `config.yml` 里的 `publish_mode` 那行注释掉，
+保存会直接提交到 `main`，不再产生 PR。
+
 **可选：换成一键登录**
 
 令牌方式对非技术创作者略麻烦。想升级成「点一下用 GitHub 授权」，可以部署

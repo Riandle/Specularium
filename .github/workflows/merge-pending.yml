@@ -1,0 +1,64 @@
+name: 合并待审改动
+
+# 后台（Sveltia CMS）在审核流程下，每改一篇内容就会开一个 cms/ 开头的 Pull Request。
+# 这个工作流把还没合并的 PR 一次性合并，然后触发一次部署，避免逐条点合并。
+#
+# 用法：仓库 Actions → 左侧「合并待审改动」→ Run workflow。
+# 先勾 dry_run 跑一次，确认待合并清单无误，再正式执行。
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: '只列出待合并的 PR，不执行合并'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pull-requests: write
+  actions: write
+
+concurrency:
+  group: merge-pending
+  cancel-in-progress: false
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 合并 cms/ 开头的待审 PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          set -euo pipefail
+
+          echo "=== 待处理的 PR ==="
+          gh pr list --state open --limit 100 \
+            --json number,headRefName,title \
+            --jq '.[] | select(.headRefName | startswith("cms/")) | "#\(.number)  \(.title)  (\(.headRefName))"'
+
+          if [ "${DRY_RUN}" = "true" ]; then
+            echo "=== dry-run：只列清单，不合并 ==="
+            exit 0
+          fi
+
+          merged=0
+          echo "=== 开始合并 ==="
+          gh pr list --state open --limit 100 \
+            --json number,headRefName \
+            --jq '.[] | select(.headRefName | startswith("cms/")) | .number' |
+          while read -r number; do
+            [ -z "${number}" ] && continue
+            echo "→ #${number}"
+            if gh pr merge "${number}" --squash --delete-branch; then
+              merged=$((merged + 1))
+            else
+              echo "  （合并失败，可能冲突或已关闭，跳过）"
+            fi
+          done
+
+          echo "=== 合并完成，触发部署 ==="
+          # 用 GITHUB_TOKEN 合并产生的提交不会自动触发其它工作流，需要手动触发一次。
+          gh workflow run deploy.yml --ref main || echo "（触发部署失败，请在 Actions 里手动跑「部署站点」）"
