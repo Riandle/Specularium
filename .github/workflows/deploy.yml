@@ -35,7 +35,8 @@ jobs:
       - name: 计算站点地址
         id: site
         run: |
-          OWNER="${GITHUB_REPOSITORY_OWNER}"
+          # GitHub Pages 的域名一律小写
+          OWNER="$(echo "${GITHUB_REPOSITORY_OWNER}" | tr '[:upper:]' '[:lower:]')"
           NAME="${GITHUB_REPOSITORY#*/}"
           if [ "$NAME" = "${OWNER}.github.io" ]; then
             BASE="/"

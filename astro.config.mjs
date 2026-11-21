@@ -11,7 +11,7 @@ const SITE_URL = process.env.SITE_URL ?? 'http://localhost:4321';
 const BASE_PATH = process.env.BASE_PATH ?? '/';
 
 // TODO: 换成你自己的仓库地址（CMS 后台 public/admin/config.yml 里的 repo 也要同步改）。
-const REPO_URL = 'https://github.com/YOUR_OWNER/YOUR_REPO';
+const REPO_URL = 'https://github.com/Riandle/Specularium';
 
 export default defineConfig({
   site: SITE_URL,
@@ -36,8 +36,9 @@ export default defineConfig({
       defaultLocale: 'root',
       titleDelimiter: '·',
       // 每篇文档底部的「编辑此页」直达 GitHub 在线编辑器。
+      // Starlight 会在这后面拼上完整路径（含 src/content/docs/），所以只写到 edit/main/。
       editLink: {
-        baseUrl: `${REPO_URL}/edit/main/src/content/docs/`,
+        baseUrl: `${REPO_URL}/edit/main/`,
       },
       social: [{ icon: 'github', label: 'GitHub', href: REPO_URL }],
       customCss: ['./src/styles/custom.css'],

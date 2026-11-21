@@ -7,11 +7,11 @@
 
 backend:
   name: github
-  repo: YOUR_OWNER/YOUR_REPO
+  repo: Riandle/Specularium
   branch: main
 
-site_url: https://YOUR_OWNER.github.io/YOUR_REPO/
-display_url: https://YOUR_OWNER.github.io/YOUR_REPO/
+site_url: https://riandle.github.io/Specularium/
+display_url: https://riandle.github.io/Specularium/
 
 # 默认「保存即发布」。想要「先开 PR、有人合并后才发布」，
 # 解开下面这行，并给创作者的令牌加上 Pull requests 读写权限。

@@ -10,15 +10,22 @@
 
 ---
 
-## 一、先改三个地方
+## 一、当前配置
 
-仓库里用 `YOUR_OWNER/YOUR_REPO` 占位，部署前必须换成你自己的：
+仓库地址已填入 `Riandle/Specularium`，站点预计部署在 <https://riandle.github.io/Specularium/>：
 
-| 文件 | 改什么 |
+| 文件 | 已填内容 |
 | --- | --- |
-| `astro.config.mjs` | `REPO_URL`：「编辑此页」和页头 GitHub 图标指向的地址 |
+| `astro.config.mjs` | `REPO_URL = https://github.com/Riandle/Specularium` |
 | `public/admin/config.yml` | `backend.repo`、`site_url`、`display_url` |
-| `src/data/site.ts` | 评论区的仓库 ID（不打算开评论可以先跳过） |
+| `src/data/site.ts` | 评论仓库 `Riandle/Specularium`（两个 ID 待填，见第七节） |
+
+**还需要你处理的两件事**
+
+1. 仓库必须是**公开**的：GitHub Pages 免费版只对公开仓库开放，giscus 的评论区也是公开 Discussion。
+2. 拿到 giscus 的两个 ID 填进 `src/data/site.ts`（第七节）。
+
+改名的话要同步四个地方：`astro.config.mjs` 的 `REPO_URL`、`public/admin/config.yml` 的 `repo`/`site_url`/`display_url`、`src/data/site.ts` 的 `repo`、以及工作流里的 base 会自动跟着仓库名变。
 
 ## 二、本地跑起来
 
@@ -128,9 +135,52 @@ npm run import:docs -- 文件.docx --slug charter  # 指定网址
 
 ## 七、评论（可选）
 
-1. 仓库 **Settings → General → Features** 勾选 **Discussions**。
-2. 打开 <https://giscus.app/zh-CN>，填入仓库，选择 discussion 分类（推荐 `Announcements`）。
-3. 把生成的 `data-repo-id`、`data-category-id` 填进 `src/data/site.ts`，并把 `enable` 改为 `true`。
+评论靠 Giscus：每篇文档底部的留言会变成仓库里的 Discussion。**仓库必须公开。**
+
+### 1. 打开 Discussions
+
+仓库 **Settings → General → Features**，勾选 **Discussions**。
+
+### 2. 装 Giscus App
+
+打开 <https://github.com/apps/giscus>，点 **Install**，只授权 `Specularium` 这一个仓库
+（`Install` 之后会让你选 "All repositories" 还是 "Only select repositories"）。
+
+### 3. 建一条讨论
+
+打开仓库的 **Discussions** 页，新建一条（分类选 **Announcements**）并发布。
+giscus 只能挂到「已经存在的分类」上，空分类选不了。
+
+### 4. 拿两个 ID
+
+打开 <https://giscus.app/zh-CN>，依次：
+
+1. **仓库**填 `Riandle/Specularium`——下方出现绿色对勾才说明协议装对了；
+2. **Discussion 分类**选 `Announcements`；
+3. 往下滚到 **「启用 giscus」**，代码框里是这样一段：
+
+   ```html
+   <script src="https://giscus.app/client.js"
+           data-repo="Riandle/Specularium"
+           data-repo-id="R_kgDOxxxxxxx"        ← 这个
+           data-category="Announcements"
+           data-category-id="DIC_kwDOxxxxxxxx"  ← 和这个
+           ...>
+   ```
+
+   `data-repo-id`（`R_` 开头）和 `data-category-id`（`DIC_` 开头）就是要的两串。
+
+### 5. 填进站点
+
+打开 `src/data/site.ts`，替换这两个值，并把 `enable` 改成 `true`：
+
+```ts
+enable: true,
+repoId: 'R_kgDOxxxxxxx',
+categoryId: 'DIC_kwDOxxxxxxxx',
+```
+
+提交后，每篇文档底部就会出现评论区。
 
 ## 八、绑定自定义域名
 

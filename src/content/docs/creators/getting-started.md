@@ -9,7 +9,7 @@ sidebar:
 
 ## 1. 打开后台
 
-在浏览器访问站点后台：`https://<你的站点域名>/admin/`。
+在浏览器访问站点后台：`https://riandle.github.io/Specularium/admin/`。
 
 ## 2. 用 GitHub 令牌登录
 
