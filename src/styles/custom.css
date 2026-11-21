@@ -78,6 +78,32 @@
   margin: 0;
 }
 
+/* 剧透折叠块（:::spoiler[标题]） */
+.spoiler {
+  margin-block: 1rem;
+  padding: 0.15rem 1rem 0.5rem;
+  border: 1px solid var(--sl-color-hairline-shade);
+  border-radius: 0.6rem;
+  background: var(--sl-color-bg-nav);
+}
+
+.spoiler__summary {
+  cursor: pointer;
+  padding-block: 0.55rem;
+  font-weight: 600;
+  color: var(--sl-color-accent);
+  list-style-position: inside;
+  user-select: none;
+}
+
+.spoiler__summary:hover {
+  text-decoration: underline;
+}
+
+.spoiler[open] > :not(summary) {
+  margin-block: 0.75rem;
+}
+
 /* 评论区 */
 .comments {
   margin-top: 3rem;

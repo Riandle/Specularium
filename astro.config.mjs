@@ -3,6 +3,7 @@ import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 import { unified } from '@astrojs/markdown-remark';
 import rehypeBaseLinks from './src/plugins/rehype-base-links.mjs';
+import remarkSpoiler from './src/plugins/remark-spoiler.mjs';
 
 // 站点部署地址与子路径。GitHub Pages 的项目站点形如 https://<用户>.github.io/<仓库名>/，
 // 因此 base 必须是 "/<仓库名>"；如果仓库名是 <用户>.github.io，或绑定了自定义域名，base 用 "/"。
@@ -17,10 +18,11 @@ export default defineConfig({
   site: SITE_URL,
   base: BASE_PATH,
   trailingSlash: 'always',
-  // 正文里的 /xxx/ 链接和 /images/xx.png 图片补上子路径（见插件注释）。
-  // Astro 7 默认处理器是 Sätteri，rehype 插件需要走 unified 处理器。
+  // 正文里的站内图片补上子路径（链接由 Astro 自己处理，图片不会）。
+  // Sätteri 不支持 hast 插件，所以显式挂一个 unified 处理器。
   markdown: {
     processor: unified({
+      remarkPlugins: [remarkSpoiler],
       rehypePlugins: [[rehypeBaseLinks, { base: BASE_PATH }]],
     }),
   },

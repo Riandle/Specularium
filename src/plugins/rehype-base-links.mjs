@@ -1,12 +1,11 @@
 /**
- * 给 Markdown 正文里的站内绝对链接和图片补上部署子路径。
+ * 给 Markdown 正文里的站内图片补上部署子路径。
  *
- * Astro 会为它自己生成的资源路径加上 base，但正文里手写的
- * `[链接](/intro/)`、`![](/images/a.png)` 不会。部署在
- * `https://<用户>.github.io/<仓库名>/` 时这些链接会 404，
- * 因此在构建阶段统一补前缀。
+ * Astro 会自动给正文里的站内链接加 base，但 `![](/images/a.png)` 这类图片路径不会，
+ * 部署在 `https://<用户>.github.io/<仓库名>/` 时会 404，所以在构建阶段补前缀。
  *
  * 已经是相对路径、带协议、协议相对或已含 base 的路径不动。
+ * 说明：Astro 7 默认的 Sätteri 处理器不支持 hast 插件，所以这里显式挂一个 unified 处理器。
  */
 import { visit } from 'unist-util-visit';
 
