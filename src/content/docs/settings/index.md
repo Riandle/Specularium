@@ -1,8 +1,8 @@
 ---
-title: 设定占位符
-description: 为了在血肉浮现之前维持骨架意义而存在的标签
+title: 设定
+description: 那些规束了世界存在的唯一方式的事物，观园的设定
 sidebar: null
-draft: true
+draft: false
 tableOfContents: null
 pagefind: false
 ---
