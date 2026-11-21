@@ -1,10 +1,10 @@
 ---
 title: 故事集
-description: 在观园里发生过的那些故事与事故
-sidebar: null
-draft: false
-tableOfContents: null
-pagefind: false
+description: 观园收录的故事。
+sidebar:
+  order: 0
 ---
 
-因而存在于此
+这里存放观园的故事。左侧按作者分组，点开任意一篇即可阅读。
+
+想按系列组织，就在新建时把「路径」字段填成系列名，侧边栏会自动多出一层分组。

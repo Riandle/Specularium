@@ -11,6 +11,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "import:docs": "node scripts/import-docs.mjs",
+    "migrate:yuque": "node scripts/migrate-yuque.mjs",
     "astro": "astro"
   },
   "dependencies": {

@@ -1,10 +1,10 @@
 ---
 title: 设定
-description: 那些规束了世界存在的唯一方式的事物，观园的设定
-sidebar: null
-draft: false
-tableOfContents: null
-pagefind: false
+description: 观园的世界观、人物、地点与术语设定。
+sidebar:
+  order: 0
 ---
 
-总是如此
+这里存放观园的设定，按类别分组：人物、名刀、地区、情绪、环境、编年史。
+
+想加新的类别，就在新建时把「路径」字段填成类别名，侧边栏会自动多出一层分组。
