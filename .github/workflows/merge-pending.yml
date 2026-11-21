@@ -27,12 +27,19 @@ jobs:
   merge:
     runs-on: ubuntu-latest
     steps:
+      # gh CLI 需要仓库上下文才能确定操作哪个仓库，否则会秒退。
+      - name: 检出仓库
+        uses: actions/checkout@v7
+
       - name: 合并 cms/ 开头的待审 PR
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DRY_RUN: ${{ inputs.dry_run }}
         run: |
           set -euo pipefail
+
+          echo "仓库：${GITHUB_REPOSITORY}"
+          gh --version | head -n 1
 
           echo "=== 待处理的 PR ==="
           gh pr list --state open --limit 100 \
@@ -46,16 +53,28 @@ jobs:
 
           merged=0
           echo "=== 开始合并 ==="
+
+          # 仓库可能只允许某一种合并方式，先探测再决定用哪个参数。
+          merge_flag="--squash"
+          if [ "$(gh repo view --json squashMergeAllowed --jq '.squashMergeAllowed')" != "true" ]; then
+            if [ "$(gh repo view --json mergeCommitAllowed --jq '.mergeCommitAllowed')" = "true" ]; then
+              merge_flag="--merge"
+            else
+              merge_flag="--rebase"
+            fi
+          fi
+          echo "合并方式：${merge_flag}"
+
           gh pr list --state open --limit 100 \
             --json number,headRefName \
             --jq '.[] | select(.headRefName | startswith("cms/")) | .number' |
           while read -r number; do
             [ -z "${number}" ] && continue
             echo "→ #${number}"
-            if gh pr merge "${number}" --squash --delete-branch; then
+            if gh pr merge "${number}" "${merge_flag}" --delete-branch; then
               merged=$((merged + 1))
             else
-              echo "  （合并失败，可能冲突或已关闭，跳过）"
+              echo "  （合并失败，可能冲突、草稿或已关闭，跳过）"
             fi
           done
 
