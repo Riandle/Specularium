@@ -62,8 +62,18 @@ npm run preview    # 本地预览构建结果
 
 3. 打开仓库 **Settings → Pages**，在 **Build and deployment → Source** 里选 **GitHub Actions**
    （不要选 "Deploy from a branch"）。**这一步不做，部署会报 `Failed to create deployment (status: 404)`。**
-4. 推送后 **Actions** 里会自动跑「部署站点」，第一次大约 1–2 分钟。
+4. **发布是手动的**：打开 **Actions → 部署站点 → Run workflow** 才会构建上线。
+   推送代码、后台保存内容都**不会**自动发布，只会在仓库里留下记录。
 5. 构建完成后访问 <https://riandle.github.io/Specularium/>。
+
+第一次上线要手动点一次 Run workflow。之后想更新，同样点一次即可——中间可以攒任意多次修改。
+
+如果想加个「兜底自动发布」，在 `deploy.yml` 的 `on:` 下加一段定时触发即可，例如每天凌晨跑一次：
+
+```yaml
+  schedule:
+    - cron: '0 18 * * *' # UTC 18:00 = 北京时间次日 02:00
+```
 
 站点地址和子路径由工作流自动计算：
 
@@ -81,8 +91,9 @@ npm run preview    # 本地预览构建结果
 2. 仓库选 `Specularium`，权限只需要 **Contents: Read and write**（读写文档和图片）。
 3. 粘贴令牌登录，之后就能编辑文档、上传图片、保存。
 
-**当前是「保存即发布」**：`config.yml` 里的 `publish_mode` 已注释掉，保存直接提交到 `main`，
-Actions 自动构建上线，不再产生 Pull Request。
+**保存只是提交，不会立刻上线**：`config.yml` 里的 `publish_mode` 已注释，保存直接提交到 `main`；
+但站点是**手动发布**的，要等维护者在 Actions 里点「部署站点 → Run workflow」才对外可见。
+所以创作者可以随时写、随便写，发布时间由维护者决定。
 
 ### 审核的真实边界（重要）
 
@@ -108,14 +119,11 @@ Actions 自动构建上线，不再产生 Pull Request。
 - 令牌保存在**创作者自己的浏览器**里，不经过任何第三方服务器。
 - 收回权限：把对方从仓库 Collaborators 里移除，或让他吊销令牌。
 
-**多次保存只会部署一次**
+**发布节奏**
 
-创作者一口气写五篇，会各自产生一次提交（CMS 一次保存 = 一个 commit，没有「攒一批再一次提交」的功能），
-但部署工作流开了「新构建取消旧构建」（`concurrency.cancel-in-progress: true`），
-所以线上只会部署最后那次内容，不会连跑五次构建。
-
-如果想要更彻底的「攒批发布」，可以把部署改成定时触发（例如每 30 分钟一次），
-代价是内容最长要等半小时才上线——需要的话说一声。
+创作者保存多少次都无所谓：每次保存只是一个 commit，不触发构建。
+想对外更新时点一次「部署站点 → Run workflow」，那一刻 `main` 上的内容会一起上线。
+两次发布之间可以攒任意多篇修改。
 
 **可选：换成一键登录**
 
@@ -237,7 +245,8 @@ Pages 的 Source 必须选 **GitHub Actions**，并且第一次部署已成功�
 令牌缺 `Contents: Read and write`；对方账号对仓库没有 Write 权限。
 
 **保存了但线上没变**
-看仓库 **Actions** 里最新一次运行是否失败；构建失败的日志会指出具体文件。
+这是预期行为：保存只进仓库，不触发构建。到 **Actions → 部署站点 → Run workflow** 手动发布一次。
+（发布过之后仍没变，就看那次运行的日志，构建失败会指出是哪个文件的问题。）
 
 **搜索找不到内容**
 搜索索引在构建时生成（Pagefind）。确认构建没有跳过索引，且文档不是 `draft: true`。

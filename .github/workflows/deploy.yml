@@ -1,9 +1,14 @@
 name: 部署站点
 
+# 手动发布：推送代码不再自动上线，什么时候对外可见由维护者决定。
+# 后台里创作者保存的内容会先进入 main 分支，等你点「Run workflow」才真正构建部署。
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
+    inputs:
+      note:
+        description: '这次发布的说明（可选，只写进运行记录）'
+        required: false
+        type: string
 
 # GitHub Pages 所需的权限
 permissions:
