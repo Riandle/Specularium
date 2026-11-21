@@ -39,6 +39,10 @@ collections:
     nested:
       depth: 4
       subfolders: false
+    # meta.path 才会真正显示「路径」编辑器（只写 nested 是不够的）。
+    # index_file 留空 = 每个条目保留自己的文件名，符合 Starlight 的「一文件一页」。
+    meta:
+      path: {}
     fields:
       - { name: title, label: 标题, widget: string }
       - {
@@ -94,6 +98,8 @@ collections:
     nested:
       depth: 5
       subfolders: false
+    meta:
+      path: {}
     fields:
       - { name: title, label: 标题, widget: string }
       - { name: description, label: 摘要, widget: text, required: false }

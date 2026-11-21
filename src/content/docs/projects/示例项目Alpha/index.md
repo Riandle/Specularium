@@ -5,7 +5,8 @@ sidebar:
   order: 1
 ---
 
-这是 `projects/alpha/` 这个文档集的封面页，对应网址 `/projects/alpha/`。
+这是 `projects/示例项目Alpha/` 这个文档集的封面页，对应网址
+`/projects/示例项目alpha/`（网址里的西文会转成小写）。
 
 ## 这个文档集包含什么
 
