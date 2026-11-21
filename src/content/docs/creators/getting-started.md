@@ -1,11 +1,12 @@
 ---
 title: 开始写作
-description: 创作者如何登录后台、编辑文档、把改动发布到线上。
+description: 创作者如何登录后台、编辑文档、提交审核，直到改动发布上线。
 sidebar:
   order: 1
 ---
 
-整个流程只有四步，不需要安装任何软件。
+整个流程分四步，不需要安装任何软件。因为站点启用了**审核流程**，你的改动会先变成一个
+待审的 Pull Request，由维护者合并后才会出现在网站上。
 
 ## 1. 打开后台
 
@@ -19,9 +20,9 @@ sidebar:
 
 1. 点「Sign in with Token」。
 2. 点对话框里的链接，跳到 GitHub 的令牌生成页（权限已预先勾选）。
-3. 按提示创建 **Fine-grained token**，仓库选本仓库，权限勾选：
-   - **Contents: Read and write**（必须，用于读写文档和图片）
-   - **Pull requests: Read and write**（仅当你启用了「编辑流程」，见文末）
+3. 按提示创建 **Fine-grained token**，仓库选 `Specularium`，权限勾选**两项**：
+   - **Contents: Read and write** —— 读写文档和图片；
+   - **Pull requests: Read and write** —— 把改动提交成待审的 Pull Request。
 4. 复制生成的令牌，粘贴回后台对话框，登录。
 
 :::caution[令牌不要外传]
@@ -29,27 +30,38 @@ sidebar:
 公共电脑上用完请点退出，并到 GitHub 设置里吊销该令牌。
 :::
 
-## 3. 写，然后保存
+:::note[少勾了 Pull requests 会怎样]
+如果只勾了 Contents，保存时会提示 `Resource not accessible by personal access token`。
+回到令牌设置把 Pull requests 加上，再重新登录即可。
+:::
 
-后台左侧是内容库，分「文档」「作品画廊」两组。
+## 3. 写，然后提交审核
+
+后台左侧是内容库，分「文档」「创作者手册」「作品画廊」三组。
 
 - **改已有文档**：点进去直接改正文，右上角「保存」。
 - **写新文档**：点「新建」，填标题、摘要，正文用 Markdown 写。
   文档的文件名就是网址的一部分，建议用英文小写加连字符，例如 `reading-notes`。
 
-保存后，后台会直接把改动**提交到 GitHub**（一次提交 = 一次修改记录）。
+点「保存」后，后台会：
 
-## 4. 等它上线
+1. 把改动提交到一条独立的分支；
+2. 自动开一个 Pull Request；
+3. 在左侧「待审核」里把它标成 **Draft**（草稿）。
 
-提交后，GitHub Actions 会自动重新构建站点，通常 **1–2 分钟**后线上就能看到。
+写完了记得把状态从 **Draft** 改成 **In review**，这样维护者才知道可以看了。
 
-可以在仓库的 **Actions** 页面看构建进度；如果构建失败，页面下方会显示是哪一步出的错。
+## 4. 等待审核与上线
 
-## 关于「编辑流程」
+1. 维护者在 GitHub 上查看这个 Pull Request，可能提修改意见；
+2. 合并之后，GitHub Actions 自动重新构建，**1–2 分钟**后线上就能看到；
+3. 如果被要求修改，在后台继续改、继续保存，改动会追加到同一个 Pull Request 里。
 
-默认是**直接发布**：保存即提交到主分支，立刻上线。
+可以在仓库的 **Actions** 页面看构建进度；构建失败时日志会指出是哪个文件的问题。
 
-如果你的团队希望有人审一下再上线，可以打开「编辑流程」：改动先存到独立分支并自动开一个
-Pull Request，审阅者合并后才会发布。打开方式是编辑 `public/admin/config.yml`，取消
-`publish_mode: editorial_workflow` 这一行的注释；同时记得让创作者的令牌多勾一项
-**Pull requests** 权限。
+## 关于审核流程
+
+- 审核流程是默认开启的（配置在 `public/admin/config.yml` 的 `publish_mode: editorial_workflow`）。
+- **谁可以合并**：对仓库有 Write 权限的人。作者本人有写权限的话，也能合并自己的改动——
+  如果希望「必须由别人审」，就在 GitHub 上给 `main` 加分支保护，并要求 PR 审阅通过。
+- 想改回「保存即发布」：把 `publish_mode` 那一行注释掉，保存会直接提交到 `main`。

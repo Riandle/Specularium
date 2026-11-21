@@ -53,13 +53,13 @@ npm run preview    # 本地预览构建结果
 2. 推送代码：
 
    ```bash
-   git remote add origin https://github.com/<你的账号>/<仓库名>.git
+   git remote add origin https://github.com/Riandle/Specularium.git
    git push -u origin main
    ```
 
 3. 打开仓库 **Settings → Pages**，把 **Source** 选成 **GitHub Actions**（不要选 "Deploy from a branch"）。
 4. 推送后 **Actions** 里会自动跑「部署站点」，第一次大约 1–2 分钟。
-5. 构建完成后访问 `https://<你的账号>.github.io/<仓库名>/`。
+5. 构建完成后访问 <https://riandle.github.io/Specularium/>。
 
 站点地址和子路径由工作流自动计算：
 
@@ -71,20 +71,24 @@ npm run preview    # 本地预览构建结果
 
 ## 四、创作者怎么编辑
 
-访问 `https://<你的域名>/admin/`，用 **GitHub 个人访问令牌**登录，不需要装任何软件：
+访问 `https://riandle.github.io/Specularium/admin/`，用 **GitHub 个人访问令牌**登录，不需要装任何软件：
 
 1. 点「Sign in with Token」，按提示到 GitHub 生成 **Fine-grained token**。
-2. 仓库选本仓库，权限勾选 **Contents: Read and write**。
+2. 仓库选 `Specularium`，权限勾 **两项**：
+   - **Contents: Read and write**
+   - **Pull requests: Read and write**（审核流程需要，缺了会报 `Resource not accessible by personal access token`）
 3. 粘贴令牌登录，之后就能编辑文档、上传图片、保存。
 
-保存即提交到 `main`，Actions 重新构建，1–2 分钟后线上更新。
+**审核流程是默认开启的**（`public/admin/config.yml` 里的 `publish_mode: editorial_workflow`）：
+保存会提交到独立分支并自动开一个 Pull Request，维护者合并后才构建上线。作者在后台把状态从
+Draft 改成 In review，维护者就能在 GitHub 上审阅。
 
 **关于权限与安全**
 
 - 只有拥有仓库 **Write 及以上**权限的人能登录后台。
 - 令牌保存在**创作者自己的浏览器**里，不经过任何第三方服务器。
-- 想让改动「先开 PR、有人审过再发布」，把 `public/admin/config.yml` 里的
-  `publish_mode: editorial_workflow` 取消注释，并给令牌加上 **Pull requests: Read and write**。
+- 收回权限：把对方从仓库 Collaborators 里移除，或让他吊销令牌。
+- 如果希望「作者自己不能合并自己的改动」，给 `main` 加分支保护，要求 PR 审阅通过才能合并。
 
 **可选：换成一键登录**
 
