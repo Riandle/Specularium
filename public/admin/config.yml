@@ -1,9 +1,13 @@
 # 观园内容后台（Sveltia CMS）配置
 #
-# 部署前必改：
-#   1. backend.repo 改成你的 owner/repo
-#   2. site_url / display_url 改成你的站点地址
-# 说明见仓库根目录 README.md 的「后台登录」一节。
+# 改动这里的效果：后台左侧的栏目名、新建时出现的字段、图片存哪里。
+# 站点导航（读者看到的侧边栏）在 astro.config.mjs 里改，两处互相独立。
+#
+# 目录结构：
+#   src/content/docs/stories/   故事集
+#   src/content/docs/settings/  设定
+#   src/content/docs/           首页、简介、404
+#   src/content/gallery/        作品画廊
 
 backend:
   name: github
@@ -26,21 +30,19 @@ media_folder: public/images
 public_folder: /images
 
 collections:
-  - name: documents
-    label: 文档
-    label_singular: 文档
-    description: 长期资料、公约、项目说明等
-    folder: src/content/docs/documents
+  - name: stories
+    label: 故事集
+    label_singular: 故事
+    description: 长篇与短篇故事。可以按系列建子文件夹（新建时在「路径」里填 系列名）。
+    folder: src/content/docs/stories
     create: true
     slug: '{{slug}}'
-    preview_path: documents/{{slug}}/
-    # 允许在「文档」里建子文件夹（文档集）。新建时在「路径」字段里写 folder/名称 即可。
-    # subfolders: false 是给 Astro/Starlight 这类「一个文件一页」的框架用的。
+    preview_path: stories/{{slug}}/
+    # 允许子文件夹；subfolders: false 是给 Astro/Starlight 这类「一个文件一页」的框架用的。
     nested:
       depth: 4
       subfolders: false
     # meta.path 才会真正显示「路径」编辑器（只写 nested 是不够的）。
-    # index_file 留空 = 每个条目保留自己的文件名，符合 Starlight 的「一文件一页」。
     meta:
       path: {}
     fields:
@@ -50,7 +52,7 @@ collections:
           label: 摘要,
           widget: text,
           required: false,
-          hint: '一句话说明这篇文档讲什么，会出现在搜索结果里',
+          hint: '一句话说明这篇讲什么，会出现在搜索结果里',
         }
       - name: sidebar
         label: 侧边栏
@@ -88,71 +90,45 @@ collections:
       - { name: pagefind, label: 站内搜索收录, widget: boolean, default: true, required: false, hint: '取消勾选后这篇不会出现在搜索结果里，但页面照常可访问' }
       - { name: body, label: 正文, widget: markdown }
 
-  - name: creators
-    label: 创作者手册
-    label_singular: 手册页面
-    folder: src/content/docs/creators
+  - name: settings
+    label: 设定
+    label_singular: 设定
+    description: 世界观、人物、地点、术语等设定。可以按类别建子文件夹（例如 人物、地点）。
+    folder: src/content/docs/settings
     create: true
     slug: '{{slug}}'
-    preview_path: creators/{{slug}}/
-    fields:
-      - { name: title, label: 标题, widget: string }
-      - { name: description, label: 摘要, widget: text, required: false }
-      - name: sidebar
-        label: 侧边栏
-        widget: object
-        required: false
-        collapsed: true
-        fields:
-          - { name: order, label: 顺序, widget: number, required: false, value_type: int }
-          - { name: label, label: 侧边栏标题, widget: string, required: false, hint: '留空就用文章标题；只想在侧边栏换个名字时填' }
-          - { name: hidden, label: 不在侧边栏显示, widget: boolean, default: false, required: false, hint: '文章照常上线、网址可访问，只是不出现在侧边栏' }
-          - { name: badge, label: 徽章文字, widget: string, required: false, hint: '标题旁的小标签，例如「新」「连载中」' }
-      - {
-          name: draft,
-          label: 草稿（不发布）,
-          widget: boolean,
-          default: false,
-          required: false,
-          hint: '勾选后只在后台保留：不生成页面、不进搜索、侧边栏也不显示',
-        }
-      - name: tableOfContents
-        label: 右侧目录
-        widget: object
-        required: false
-        collapsed: true
-        fields:
-          - { name: minHeadingLevel, label: 起始级别, widget: number, required: false, value_type: int, hint: '2 = 从二级标题开始收录，默认 2' }
-          - { name: maxHeadingLevel, label: 最深级别, widget: number, required: false, value_type: int, hint: '默认 3，只收 ## 和 ###' }
-      - { name: pagefind, label: 站内搜索收录, widget: boolean, default: true, required: false, hint: '取消勾选后这篇不会出现在搜索结果里，但页面照常可访问' }
-      - { name: body, label: 正文, widget: markdown }
-
-  - name: projects
-    label: 项目文档集
-    label_singular: 项目文档
-    description: 一个文件夹 = 一个项目，文件夹名就是侧边栏分组名；项目里可以再建子文件夹
-    folder: src/content/docs/projects
-    create: true
-    slug: '{{slug}}'
-    preview_path: projects/{{slug}}/
+    preview_path: settings/{{slug}}/
     nested:
-      depth: 5
+      depth: 4
       subfolders: false
     meta:
       path: {}
     fields:
       - { name: title, label: 标题, widget: string }
-      - { name: description, label: 摘要, widget: text, required: false }
+      - {
+          name: description,
+          label: 摘要,
+          widget: text,
+          required: false,
+          hint: '一句话说明这条设定的用途',
+        }
       - name: sidebar
         label: 侧边栏
         widget: object
         required: false
         collapsed: true
         fields:
-          - { name: order, label: 顺序, widget: number, required: false, value_type: int }
+          - {
+              name: order,
+              label: 顺序,
+              widget: number,
+              required: false,
+              value_type: int,
+              hint: '数字越小越靠前，留空则按标题排序',
+            }
           - { name: label, label: 侧边栏标题, widget: string, required: false, hint: '留空就用文章标题；只想在侧边栏换个名字时填' }
           - { name: hidden, label: 不在侧边栏显示, widget: boolean, default: false, required: false, hint: '文章照常上线、网址可访问，只是不出现在侧边栏' }
-          - { name: badge, label: 徽章文字, widget: string, required: false, hint: '标题旁的小标签，例如「新」「连载中」' }
+          - { name: badge, label: 徽章文字, widget: string, required: false, hint: '标题旁的小标签，例如「新」「待补」' }
       - {
           name: draft,
           label: 草稿（不发布）,

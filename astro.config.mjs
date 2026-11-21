@@ -26,7 +26,7 @@ export default defineConfig({
   },
   integrations: [
     starlight({
-      title: '观园',
+      title: '观园3.18.19',
       description: '观园文档库：文档公开可读，创作者在网页上直接编辑，改动自动提交到 GitHub。',
       logo: { src: './src/assets/logo.svg', alt: '观园' },
       // 全站中文：把根语言设为简体中文，Starlight 的界面文案会说中文。
@@ -46,30 +46,18 @@ export default defineConfig({
       components: {
         MarkdownContent: './src/components/MarkdownContent.astro',
       },
-      // 侧边栏：中文标签 + 目录自动生成。
-      // 目录里还没有文档时，自动生成的分组会显示成空标题，所以先注释掉；
-      // 往对应文件夹里放入文档后，把这些注释放开即可（不需要逐个列文件名）。
+      // 侧边栏：两个大组（故事集、设定）+ 简介和画廊。
+      // 组内文档用 autogenerate 自动收纳；放子文件夹会自动多一层分组。
       sidebar: [
+        { label: '观园简介', slug: 'intro' },
         {
-          label: '开始',
-          items: [{ label: '观园简介', slug: 'intro' }],
+          label: '故事集',
+          items: [{ autogenerate: { directory: 'stories' } }],
         },
-        // {
-        //   label: '文档',
-        //   items: [{ autogenerate: { directory: 'documents' } }],
-        // },
-        // 一个项目 = 一个文件夹，文件夹名就是侧边栏里的分组名。
-        // 用中文命名文件夹，就能得到中文标题且新增项目时无需改配置。
-        // 想给某个项目换标题或固定顺序，改成显式分组：
-        //   { label: '示例项目', items: [{ autogenerate: { directory: 'projects/示例项目' } }] }
-        // {
-        //   label: '项目文档集',
-        //   items: [{ autogenerate: { directory: 'projects', collapsed: true } }],
-        // },
-        // {
-        //   label: '创作者手册',
-        //   items: [{ autogenerate: { directory: 'creators' } }],
-        // },
+        {
+          label: '设定',
+          items: [{ autogenerate: { directory: 'settings' } }],
+        },
         {
           label: '作品画廊',
           link: '/gallery/',

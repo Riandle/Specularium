@@ -71,7 +71,7 @@ npm run preview    # 本地预览构建结果
 - 其他仓库名 → 部署在 `https://<账号>.github.io/<仓库名>/`，base 自动设为 `/<仓库名>/`
 
 正文里的站内链接和图片会自动补上子路径（`src/plugins/rehype-base-links.mjs`），
-所以创作者照常写 `/documents/xxx/` 这样的绝对路径即可。
+所以创作者照常写 `/stories/xxx/` 这样的绝对路径即可。
 
 ## 四、创作者怎么编辑
 
@@ -106,10 +106,10 @@ Draft 改成 In review，维护者就能在 GitHub 上审阅。
 src/
   content/
     docs/            # 文档正文：Markdown，决定站点的侧边栏
-      index.mdx      # 首页（splash 模板，含 hero 和作品推荐）
+      index.mdx      # 首页（splash 模板，含 hero）
       intro.md       # 观园简介
-      documents/     # 「文档」栏目
-      creators/      # 「创作者手册」
+      stories/       # 「故事集」栏目
+      settings/      # 「设定」栏目
     gallery/         # 作品画廊，一份 .md = 一件作品
   components/        # Gallery、Comments、MarkdownContent 覆盖
   pages/             # /gallery 列表页与作品详情页
@@ -123,23 +123,24 @@ public/
 scripts/
   import-docs.mjs    # Word/PDF 批量导入
   copy-cms.mjs       # 构建前把 CMS 脚本复制到 public/admin/
+  md_to_docx.py      # 本地 Markdown → Word/PDF
 .github/workflows/deploy.yml
 ```
 
 ## 六、导入已有的 Word / PDF
 
 ```bash
-npm run import:docs -- "D:\资料\社区公约.docx"
-npm run import:docs -- "D:\资料\待导入"          # 整个文件夹
-npm run import:docs -- 文件.docx --slug charter  # 指定网址
+npm run import:docs -- "D:\资料\长夜.docx"
+npm run import:docs -- "D:\资料\待导入"            # 整个文件夹
+npm run import:docs -- 文件.docx --slug changye    # 指定网址
+npm run import:docs -- 文件.docx --to settings     # 导入到「设定」而非「故事集」
 ```
 
 - `.docx`：转成 Markdown，图片抽到 `public/images/imported/`
 - `.pdf`：复制到 `public/files/`，生成一页带下载链接的说明
-- `.md`：补上头部信息后放进 `src/content/docs/documents/`
+- `.md`：补上头部信息后放进 `src/content/docs/stories/`（或 `--to settings`）
 
-转换保证内容不丢，但标题层级、复杂表格、文本框、公式仍需人工过一眼，
-详见站点里的「创作者手册 → 导入 Word / PDF」。
+转换保证内容不丢，但标题层级、复杂表格、文本框、公式仍需人工过一眼。
 
 ## 七、评论（可选）
 

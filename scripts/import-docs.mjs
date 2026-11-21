@@ -2,16 +2,17 @@
 /**
  * 把 Word / PDF 资料导入站点。
  *
- *   npm run import:docs -- "D:\资料\社区公约.docx"
- *   npm run import:docs -- "D:\资料\待导入"        # 整个文件夹
- *   npm run import:docs -- 文件.docx --slug charter # 指定网址 slug
+ *   npm run import:docs -- "D:\资料\长夜.docx"
+ *   npm run import:docs -- "D:\资料\待导入"              # 整个文件夹
+ *   npm run import:docs -- 文件.docx --slug changye      # 指定网址 slug
+ *   npm run import:docs -- 文件.docx --to settings       # 导入到「设定」而不是「故事集」
  *
  * 处理规则：
- *   .docx  → 转成 Markdown，写入 src/content/docs/documents/，图片抽到 public/images/imported/
+ *   .docx  → 转成 Markdown，写入 src/content/docs/{stories|settings}/，图片抽到 public/images/imported/
  *   .pdf   → 复制到 public/files/，生成一页带下载链接的文档
- *   .md    → 补上缺少的头部信息后复制进文档目录
+ *   .md    → 补上缺少的头部信息后复制进对应栏目
  *
- * 转换只保证「内容不丢」，排版仍需人工过一眼（见创作者手册「导入 Word / PDF」）。
+ * 转换只保证「内容不丢」，排版仍需人工过一眼。
  */
 import { copyFile, mkdir, readFile, readdir, stat, writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
@@ -23,20 +24,27 @@ import TurndownService from 'turndown';
 import * as gfmPlugin from 'turndown-plugin-gfm';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const DOCS_DIR = resolve(ROOT, 'src/content/docs/documents');
 const FILES_DIR = resolve(ROOT, 'public/files');
 const IMAGES_DIR = resolve(ROOT, 'public/images/imported');
 
+// 默认导入到「故事集」，可用 --to settings 改到「设定」
+const COLLECTIONS = ['stories', 'settings'];
+let DOCS_DIR = resolve(ROOT, 'src/content/docs/stories');
+
 const gfm = gfmPlugin.gfm ?? gfmPlugin.default?.gfm;
 
-/** 命令行参数解析：位置参数是待导入路径，--slug 覆盖单个文件的网址名。 */
+/** 命令行参数解析：位置参数是待导入路径，--slug 覆盖单个文件的网址名，--to 指定导入到哪个栏目。 */
 function parseArgs(argv) {
   const paths = [];
   let slug = '';
+  let to = 'stories';
   for (let i = 0; i < argv.length; i += 1) {
     const arg = argv[i];
     if (arg === '--slug') {
       slug = argv[i + 1] ?? '';
+      i += 1;
+    } else if (arg === '--to') {
+      to = argv[i + 1] ?? 'stories';
       i += 1;
     } else if (arg.startsWith('--')) {
       console.warn(`[跳过] 未知参数 ${arg}`);
@@ -44,7 +52,7 @@ function parseArgs(argv) {
       paths.push(arg);
     }
   }
-  return { paths, slug };
+  return { paths, slug, to };
 }
 
 const SAFE_SLUG = /[\\/:*?"<>|#%\s]+/g;
@@ -247,10 +255,13 @@ async function importMarkdown(file, slugOverride) {
 }
 
 async function main() {
-  const { paths, slug } = parseArgs(process.argv.slice(2));
+  const { paths, slug, to } = parseArgs(process.argv.slice(2));
+
+  const collection = COLLECTIONS.includes(to) ? to : 'stories';
+  DOCS_DIR = resolve(ROOT, `src/content/docs/${collection}`);
 
   if (paths.length === 0) {
-    console.log('用法：npm run import:docs -- <文件或文件夹> [--slug 网址名]');
+    console.log('用法：npm run import:docs -- <文件或文件夹> [--to stories|settings] [--slug 网址名]');
     process.exitCode = 1;
     return;
   }
