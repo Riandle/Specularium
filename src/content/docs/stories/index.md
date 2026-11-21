@@ -1,8 +1,8 @@
 ---
-title: 故事集占位符
-description: 在故事重新插入书中之前为书提供其意义的书签
+title: 故事集
+description: 在观园里发生过的那些故事与事故
 sidebar: null
-draft: true
+draft: false
 tableOfContents: null
 pagefind: false
 ---
